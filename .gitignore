@@ -1,0 +1,30 @@
+# Android
+.idea/
+.gradle/
+build/
+local.properties
+*.apk
+*.log
+*.pid
+
+# Python/Backend
+__pycache__/
+*.py[cod]
+*$py.class
+backend/app.db
+backend/server.log
+backend/backend.log
+server.log
+venv/
+.env
+
+# Large Binary Files (Excluded due to size limits)
+Model_API/
+*.epub
+*.gguf
+*.onnx
+*.pt
+
+# OS specific
+.DS_Store
+Thumbs.db

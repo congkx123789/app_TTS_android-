@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matcha Text to Sound Web App</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --primary-color: #3b82f6;
+            --primary-hover: #2563eb;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --card-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--surface-color);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        p {
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--bg-color);
+            border: 1px solid #334155;
+            border-radius: var(--radius);
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 120px;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .language-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .radio-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        input[type="radio"] {
+            accent-color: var(--primary-color);
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            background-color: #475569;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loader {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #audio-player-container {
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        audio {
+            width: 100%;
+            height: 40px;
+            border-radius: var(--radius);
+        }
+
+        .error {
+            color: #ef4444;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Matcha Text-to-Sound Web</h1>
+        <p>Test your TTS API on the web before the Android App is ready!</p>
+
+        <div class="language-selector">
+            <label class="radio-btn">
+                <input type="radio" name="language" value="vn" checked>
+                Vietnamese
+            </label>
+            <label class="radio-btn">
+                <input type="radio" name="language" value="en">
+                English
+            </label>
+        </div>
+
+        <div class="input-group">
+            <label for="model-type">TTS Model Type</label>
+            <select id="model-type"
+                style="width: 100%; padding: 0.8rem; background: var(--bg-color); color: white; border: 1px solid #334155; border-radius: var(--radius); margin-bottom: 1rem;">
+                <option value="matcha" selected>Matcha-TTS (Original)</option>
+                <option value="piper">Piper (Fast/Mobile)</option>
+                <option value="vieneu">VieNeu-TTS (Modern)</option>
+                <option value="f5">F5-TTS (Expressive)</option>
+            </select>
+
+            <label for="model-name">Model Variant</label>
+            <select id="model-name"
+                style="width: 100%; padding: 0.8rem; background: var(--bg-color); color: white; border: 1px solid #334155; border-radius: var(--radius);">
+                <option value="default">Default</option>
+                <option value="medium">Piper: Medium</option>
+                <option value="x_low">Piper: Ultra Low</option>
+                <option value="zalopay">F5: ZaloPay</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="text-input">Text to Synthesize</label>
+            <textarea id="text-input" placeholder="Xin chào, đây là Matcha TTS."></textarea>
+        </div>
+
+        <button id="generate-btn" onclick="synthesize()">
+            <div class="loader" id="loader"></div>
+            <span id="btn-text">Generate & Play Audio</span>
+        </button>
+
+        <div class="error" id="error-msg"></div>
+
+        <div id="audio-player-container">
+            <label>Generated Audio:</label>
+            <audio id="audio-player" controls autoplay></audio>
+        </div>
+    </div>
+
+    <script>
+        async function synthesize() {
+            const textInput = document.getElementById('text-input').value.trim();
+            const language = document.querySelector('input[name="language"]:checked').value;
+            const modelType = document.getElementById('model-type').value;
+            const modelName = document.getElementById('model-name').value;
+            const btn = document.getElementById('generate-btn');
+            const loader = document.getElementById('loader');
+            const btnText = document.getElementById('btn-text');
+            const errorMsg = document.getElementById('error-msg');
+            const audioContainer = document.getElementById('audio-player-container');
+            const audioPlayer = document.getElementById('audio-player');
+
+            if (!textInput) {
+                showError("Please enter some text!");
+                return;
+            }
+
+            // Reset UI
+            errorMsg.style.display = 'none';
+            btn.disabled = true;
+            loader.style.display = 'block';
+            btnText.innerText = 'Synthesizing...';
+            audioContainer.style.display = 'none';
+
+            try {
+                const response = await fetch('http://localhost:8000/api/v1/synthesize', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text: textInput,
+                        language: language,
+                        model_type: modelType,
+                        model_name: modelName
+                    })
+                });
+
+                if (!response.ok) {
+                    let errText = await response.text();
+                    throw new Error(`Server Error: ${response.status} - ${errText}`);
+                }
+
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                audioPlayer.src = url;
+                audioContainer.style.display = 'block';
+
+                // Optionally play it immediately (handled by autoplay attribute, but we can enforce)
+                audioPlayer.play().catch(e => console.log("Autoplay blocked:", e));
+
+            } catch (error) {
+                console.error(error);
+                showError(error.message);
+            } finally {
+                // Restore UI
+                btn.disabled = false;
+                loader.style.display = 'none';
+                btnText.innerText = 'Generate & Play Audio';
+            }
+        }
+
+        function showError(message) {
+            const errorMsg = document.getElementById('error-msg');
+            errorMsg.innerText = message;
+            errorMsg.style.display = 'block';
+        }
+    </script>
+
+</body>
+
+</html>
