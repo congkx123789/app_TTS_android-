@@ -6,8 +6,8 @@ Trudio is a cutting-edge full-stack solution that merges a native mobile applica
 
 **Trudio** là một giải pháp full-stack đột phá, kết hợp giữa ứng dụng di động bản địa (Native Mobile App) và hệ thống xử lý ngôn ngữ tự nhiên (NLP) tiên tiến để mang lại trải nghiệm đọc và nghe sách tối ưu cho người Việt.
 
-[![Status](https://img.shields.io/badge/Status-Development-orange?style=for-the-badge)](https://github.com/alida/Trudio)
-[![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20FastAPI-blue?style=for-the-badge)](https://github.com/alida/Trudio)
+[![Status](https://img.shields.io/badge/Status-Development-orange?style=for-the-badge)](https://github.com/congkx123789/app_TTS_android-)
+[![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20FastAPI-blue?style=for-the-badge)](https://github.com/congkx123789/app_TTS_android-)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 ---
@@ -155,4 +155,4 @@ Open the `frontend/TextToSound` folder in **Android Studio**.
 
 ## 👨‍💻 Author
 **Trudio** is built with passion for Vietnamese literature and AI technology. 🇻🇳
-Built by [Alida](https://github.com/alida) - Making knowledge accessible through sound.
+Built by [Alida](https://github.com/congkx123789) - Making knowledge accessible through sound.
