@@ -1,14 +1,24 @@
 import os
-import sys
+from pathlib import Path
 
-# Define base paths
-MATCHA_DIR = "/home/alida/Documents/Cursor/Model_AI_Text_To_sound/Matcha-TTS"
+# Get project root (parent of backend folder)
+ROOT_DIR = Path(__file__).resolve().parent.parent
+
+# Define base paths - Supporting relative paths for portability
+# Matcha-TTS is usually a sibling to the current project or inside a Model_AI folder
+# We check a few common locations
+MATCHA_DIR_DEFAULT = ROOT_DIR.parent / "Model_AI_Text_To_sound" / "Matcha-TTS"
+MATCHA_DIR = os.getenv("MATCHA_DIR", str(MATCHA_DIR_DEFAULT))
+
+if not os.path.exists(MATCHA_DIR):
+    # Fallback to current sibling if not found in Model_AI
+    alt_matcha = ROOT_DIR.parent / "Matcha-TTS"
+    if alt_matcha.exists():
+        MATCHA_DIR = str(alt_matcha)
 
 # Checkpoints
 VN_CHECKPOINT = os.path.join(MATCHA_DIR, "checkpoints_vn", "matcha_vn_ngngngan.pt")
-# For English, we'll try to use a VCTK or LJSpeech checkpoint if available, or fallback to something else.
-# Alternatively, point to the last checkpoint of your training for VN if preferred.
-EN_CHECKPOINT = os.path.join(MATCHA_DIR, "matcha_ljspeech.ckpt") # Will be downloaded automatically by matcha if not exist, or we can use another one
+EN_CHECKPOINT = os.path.join(MATCHA_DIR, "matcha_ljspeech.ckpt")
 
 # Audio properties
 SAMPLE_RATE = 22050

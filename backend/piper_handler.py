@@ -31,8 +31,8 @@ class PiperHandler:
             if os.path.exists(alt_path):
                 model_path = alt_path
             else:
-                # Try absolute path from project root
-                proj_root = "/home/alida/Documents/Cursor/App text to sould"
+                # Resolve relative to project root (parent of backend)
+                proj_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
                 model_path = os.path.join(proj_root, model_path)
                 
         if not os.path.exists(config_path):
@@ -40,7 +40,7 @@ class PiperHandler:
             if os.path.exists(alt_path):
                 config_path = alt_path
             else:
-                proj_root = "/home/alida/Documents/Cursor/App text to sould"
+                proj_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
                 config_path = os.path.join(proj_root, config_path)
 
         self.model_path = model_path
@@ -113,7 +113,7 @@ class VieNeuHandler:
             if os.path.exists(alt_path):
                 model_path = alt_path
             else:
-                proj_root = "/home/alida/Documents/Cursor/App text to sould"
+                proj_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
                 model_path = os.path.join(proj_root, model_path)
         
         self.model_path = model_path
@@ -173,7 +173,7 @@ class F5TTSHandler:
             if os.path.exists(alt_path):
                 checkpoint_path = alt_path
             else:
-                proj_root = "/home/alida/Documents/Cursor/App text to sould"
+                proj_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
                 checkpoint_path = os.path.join(proj_root, checkpoint_path)
 
         if not os.path.exists(vocab_path):
@@ -181,7 +181,7 @@ class F5TTSHandler:
             if os.path.exists(alt_path):
                 vocab_path = alt_path
             else:
-                proj_root = "/home/alida/Documents/Cursor/App text to sould"
+                proj_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
                 vocab_path = os.path.join(proj_root, vocab_path)
 
         self.checkpoint_path = checkpoint_path

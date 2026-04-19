@@ -1,15 +1,24 @@
 import sys
 import os
-import torch
-import soundfile as sf
-import numpy as np
+from pathlib import Path
+
+# Get project root (parent of backend folder)
+ROOT_DIR = Path(__file__).resolve().parent.parent
 
 # Mocking config for standalone test
-MATCHA_DIR = "/home/alida/Documents/Cursor/Model_AI_Text_To_sound/Matcha-TTS"
+MATCHA_DIR_DEFAULT = ROOT_DIR.parent / "Model_AI_Text_To_sound" / "Matcha-TTS"
+MATCHA_DIR = os.getenv("MATCHA_DIR", str(MATCHA_DIR_DEFAULT))
+
+if not os.path.exists(MATCHA_DIR):
+    # Fallback to current sibling if not found in Model_AI
+    alt_matcha = ROOT_DIR.parent / "Matcha-TTS"
+    if alt_matcha.exists():
+        MATCHA_DIR = str(alt_matcha)
+
 VN_CHECKPOINT = os.path.join(MATCHA_DIR, "checkpoints_vn", "matcha_vn_ngngngan.pt")
 SAMPLE_RATE = 22050
 
-sys.path.append(MATCHA_DIR)
+sys.path.append(str(MATCHA_DIR))
 
 from matcha.models.matcha_tts import MatchaTTS
 from matcha.hifigan.models import Generator as HiFiGAN

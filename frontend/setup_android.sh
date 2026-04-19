@@ -3,7 +3,9 @@ set -e
 
 APP_NAME="TextToSound"
 PACKAGE="com.example.texttosound"
-PROJECT_DIR="/home/alida/Documents/Cursor/App text to sould/frontend/$APP_NAME"
+# Resolve PROJECT_DIR relative to script location
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+PROJECT_DIR="$SCRIPT_DIR/$APP_NAME"
 
 mkdir -p "$PROJECT_DIR/app/src/main/java/com/example/texttosound"
 mkdir -p "$PROJECT_DIR/app/src/main/res/values"
